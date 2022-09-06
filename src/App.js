@@ -1,22 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import {
+  useFlagVariation,
+  useAdapterStatus,
+  useFeatureToggle,
+} from "@flopflip/react-broadcast";
+
+import {
+  DASHBOARD_SANITY_CHECK,
+  DASHBOARD_COLOR,
+} from "./FeatureFlagsProvider";
 
 function App() {
+  const { isConfigured } = useAdapterStatus();
+
+  const dashboardSanityCheck = useFeatureToggle(DASHBOARD_SANITY_CHECK);
+  const dashboardColor = useFlagVariation(DASHBOARD_COLOR);
+
+  console.log({
+    flags: {
+      dashboardSanityCheck,
+      dashboardColor,
+    },
+    adapter: {
+      isConfigured,
+    },
+  });
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <h1
+          style={{
+            color: dashboardColor,
+          }}
         >
-          Learn React
-        </a>
+          Hello, World!
+        </h1>
+        <br />
+        <strong>dashboard-sanity-check</strong> is{" "}
+        <strong>
+          {dashboardSanityCheck ? "🟢 ENABLED 🟢" : "🔴 DISABLED 🔴"}
+        </strong>
       </header>
     </div>
   );
